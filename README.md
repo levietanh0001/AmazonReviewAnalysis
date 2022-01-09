@@ -8,6 +8,15 @@ Objectives
 ---
 
 
+Tech Stack
+---
+- Django: backend
+- React.js: frontend
+- Charts.js: data visualization
+- nltk/spacy: natural language processing
+- sklearn: machine learning
+
+
 Members
 ---
 
