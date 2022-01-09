@@ -13,6 +13,7 @@ Tech Stack
 - Django: backend
 - React.js: frontend
 - Charts.js: data visualization
+- selenium: data scraper
 - nltk/spacy: natural language processing
 - sklearn: machine learning
 
@@ -23,8 +24,9 @@ Members
 
 Approach
 ---
-Use TFIDF to assess how relevant a keyword is with respect to the 5-star review set
-Use Count Vectorizer to see how many times a keyword appears in a 5-star review set.
+- Use TFIDF to assess how relevant a keyword is with respect to the 5-star review set.
+- Use Count Vectorizer to see how many times a keyword appears in a 5-star review set.
+- Visualize the data in a web app
 
 TFIDF vs CountVectorizer
 ---
