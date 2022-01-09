@@ -1,4 +1,4 @@
-# AmazonReviewAnalysis (Natural Language Processing Web App)
+# AmazonReviewAnalysis - A Natural Language Processing Web App
 
 Overview
 ---
