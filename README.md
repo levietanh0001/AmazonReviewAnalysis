@@ -28,7 +28,7 @@ Use TF-IDF Vectorizer to assess how much a keyword affects the overall rating.
 Steps
 ---
 1. Preprocessing
-2. Applying TF0-IDF Vectorizer
+2. Applying TF-IDF Vectorizer
 3. Visualize the keywords
 4. Evaluate
 Predict how much a review (containing a set of keywords) will be rated using SVM.
