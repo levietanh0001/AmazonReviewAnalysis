@@ -35,6 +35,17 @@ TFIDF vs CountVectorizer
   - TFIDF: importance of a word in a corpus containing reviews, with each review being a string of tokens
 
 
+Demo
+---
+1. Data Visualization
+
+![image](https://user-images.githubusercontent.com/47298653/148825435-5a590bee-013d-4b09-9bc5-bb601310774d.png)
+
+![image](https://user-images.githubusercontent.com/47298653/148825489-45e1935b-31d5-4382-a466-f0f4208dc634.png)
+
+
+
+
 References
 ---
 1. https://medium.com/swlh/natural-language-processing-nlp-analysis-with-amazon-review-data-part-i-data-engineering-6573b782e4dc
