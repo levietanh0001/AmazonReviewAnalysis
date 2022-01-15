@@ -1,1 +1,8 @@
-# AmazonReviewAnalysis
+TFIDVECTORIZER
+---
+VISUALIZATION
+---
+
+LABELING
+---
+Doccano
