@@ -92,7 +92,7 @@ if __name__ == '__main__':
     c.compute_words_frequency()
     x = c.get_word_frequency_list()
     y = c.get_word_list()
-    c.plot_word_frequency_bar_chart(x, y, title=f'Top {c.n} 5-star bigram TFIDF')
+    c.plot_word_frequency_bar_chart(x, y, title=f'Top {c.n} 5-star bigram CountVectorizer')
     
     
     # arraylist_review_5star = df.processed_review_token_list_cv
