@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 
-class TFIDFKeywordAnalyzer:
+class MyTFIDF:
     def set_dataframe_source(self, src):
         self.src = src
     def get_dataframe_source(self):
@@ -61,7 +61,7 @@ class TFIDFKeywordAnalyzer:
 
 
 if __name__ == '__main__':
-    t = TFIDFKeywordAnalyzer()
+    t = MyTFIDF()
     csv_path = r"./databases/canned_coffee_5star_processed.csv"
     t.set_dataframe_source(csv_path)
     t.produce_corpus_from_df_col('processed_review_tfidf')
