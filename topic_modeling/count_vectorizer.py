@@ -35,7 +35,8 @@ def n_gram_plot(data,title,color):
     
     
 if __name__ == '__main__':
-    df = pd.read_csv(r"canned_coffee_5star_processed.csv", encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
+    csv_path = r"./databases/canned_coffee_5star_processed.csv"
+    df = pd.read_csv(csv_path, encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
     # arraylist_review_5star = df.processed_review_token_list_cv
     
     

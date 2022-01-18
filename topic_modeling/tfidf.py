@@ -62,7 +62,8 @@ class TFIDFKeywordAnalyzer:
 
 if __name__ == '__main__':
     t = TFIDFKeywordAnalyzer()
-    t.set_dataframe_source(r"canned_coffee_5star_processed.csv")
+    csv_path = r"./databases/canned_coffee_5star_processed.csv"
+    t.set_dataframe_source(csv_path)
     t.produce_corpus_from_df_col('processed_review_tfidf')
     t.tfidf_engine(ngram=2)
     t.set_number_of_keywords(n=20)
