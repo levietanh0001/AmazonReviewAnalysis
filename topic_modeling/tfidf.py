@@ -25,7 +25,7 @@ class MyTFIDF:
         self.df = pd.read_csv(self.src, encoding="utf-8-sig")
         self.corpus = self.df[f'{self.data_col}']
         return self.corpus
-    def tfidf_engine(self, ngram):
+    def engine(self, ngram):
         if ngram == '' or ngram == None:
             print("\nPlease specify n-gram!")
         self.ngram = ngram
@@ -64,8 +64,8 @@ if __name__ == '__main__':
     t = MyTFIDF()
     csv_path = r"./databases/canned_coffee_5star_processed.csv"
     t.set_dataframe_source(csv_path)
-    t.produce_corpus_from_df_col('processed_review_tfidf')
-    t.tfidf_engine(ngram=2)
+    t.produce_corpus_from_df_col('processed_review')
+    t.engine(ngram=2)
     t.set_number_of_keywords(n=20)
     t.compute_words_frequency()
     x = t.get_word_frequency_list()

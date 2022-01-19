@@ -26,7 +26,7 @@ class MyCountVectorizer:
         self.df = pd.read_csv(self.src, encoding="utf-8-sig")
         self.corpus = self.df[f'{self.data_col}']
         return self.corpus
-    def countvectorizer_engine(self, ngram):
+    def engine(self, ngram):
         if ngram == '' or ngram == None:
             print("\nPlease specify n-gram!")
         self.ngram = ngram
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     csv_path = r"./databases/canned_coffee_5star_processed.csv"
     df = pd.read_csv(csv_path, encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
     c.set_dataframe_source(csv_path)
-    c.produce_corpus_from_df_col('processed_review_tfidf')
-    c.countvectorizer_engine(ngram=2)
+    c.produce_corpus_from_df_col('processed_review')
+    c.engine(ngram=2)
     c.set_number_of_keywords(n=20)
     c.compute_words_frequency()
     x = c.get_word_frequency_list()

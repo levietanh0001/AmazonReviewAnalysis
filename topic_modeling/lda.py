@@ -11,9 +11,16 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # import plotly.graph_objects as go
 import seaborn as sns
 import matplotlib.pyplot as plt
+from gensim import corpora, models, similarities, downloader
 
 
-
+## Evaluation
+# C_v measure is based on a sliding window, one-set segmentation of the top words and an indirect confirmation measure that uses normalized pointwise mutual information (NPMI) and the cosine similarity
+# C_p is based on a sliding window, one-preceding segmentation of the top words and the confirmation measure of Fitelson’s coherence
+# C_uci measure is based on a sliding window and the pointwise mutual information (PMI) of all word pairs of the given top words
+# C_umass is based on document cooccurrence counts, a one-preceding segmentation and a logarithmic conditional probability as confirmation measure
+# C_npmi is an enhanced version of the C_uci coherence using the normalized pointwise mutual information (NPMI)
+# C_a is baseed on a context window, a pairwise comparison of the top words and an indirect confirmation measure that uses normalized pointwise mutual information (NPMI) and the cosine similarity
 class MyLDA:
     def set_dataframe_source(self, src):
         self.src = src
@@ -26,12 +33,16 @@ class MyLDA:
         self.df = pd.read_csv(self.src, encoding="utf-8-sig")
         self.corpus = self.df[f'{self.data_col}']
         return self.corpus
-    def countvectorizer_engine(self, ngram):
+    def set_number_of_topics(self, number_of_topics=5):
+        self.number_of_topics = number_of_topics
+    def engine(self, ngram):
         if ngram == '' or ngram == None:
             print("\nPlease specify n-gram!")
         self.ngram = ngram
         self.vectorizer = CountVectorizer(ngram_range=(self.ngram, self.ngram))
         self.bow_matrix = self.vectorizer.fit_transform(self.corpus)
+        lda = LDA(n_components=self.number_of_topics)
+        lda.fit(self.bow_matrix)
     def get_bag_of_words_matrix(self):
         return self.bow_matrix
     def set_number_of_keywords(self, n=20):
@@ -86,10 +97,12 @@ if __name__ == '__main__':
     csv_path = r"./databases/canned_coffee_5star_processed.csv"
     df = pd.read_csv(csv_path, encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
     l.set_dataframe_source(csv_path)
-    l.produce_corpus_from_df_col('processed_review_tfidf')
-    l.countvectorizer_engine(ngram=2)
-    l.set_number_of_keywords(n=20)
-    l.compute_words_frequency()
-    x = l.get_word_frequency_list()
-    y = l.get_word_list()
-    l.plot_word_frequency_bar_chart(x, y, title=f'Top {l.n} 5-star bigram LDA')
+    l.produce_corpus_from_df_col('processed_review_tokens_list')
+    dictionary = gensim.corpora.Dictionary(l.corpus)
+    # l.set_number_of_topics()
+    # l.engine(ngram=2)
+    # l.set_number_of_keywords(n=20)
+    # l.compute_words_frequency()
+    # x = l.get_word_frequency_list()
+    # y = l.get_word_list()
+    # l.plot_word_frequency_bar_chart(x, y, title=f'Top {l.n} 5-star bigram LDA')
