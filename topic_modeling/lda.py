@@ -11,8 +11,8 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # import plotly.graph_objects as go
 import seaborn as sns
 import matplotlib.pyplot as plt
-from gensim import corpora, models, similarities, downloader
-
+from gensim import corpora, similarities, downloader
+from gensim.models import LdaMulticore, CoherenceModel
 
 ## Evaluation
 # C_v measure is based on a sliding window, one-set segmentation of the top words and an indirect confirmation measure that uses normalized pointwise mutual information (NPMI) and the cosine similarity
@@ -98,7 +98,61 @@ if __name__ == '__main__':
     df = pd.read_csv(csv_path, encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
     l.set_dataframe_source(csv_path)
     l.produce_corpus_from_df_col('processed_review_tokens_list')
-    dictionary = gensim.corpora.Dictionary(l.corpus)
+    # print(np.array(l.corpus))
+    docs = []
+    for tl in l.corpus:
+        tl_array = tl.replace('[', '').replace(']', '').replace('\'', '').split()
+        # print(tl_array)
+        # print(np.array(tl))
+        # print(type(np.array(tl)))
+        # tl_array = np.array(tl)
+        docs.append(tl_array)
+    # print(docs[:5])
+        
+    
+    dictionary = corpora.Dictionary(docs)
+    # print(dictionary.token2id)
+    bow_corpus = [dictionary.doc2bow(doc) for doc in docs]
+    # print('\n======================')
+    # print(bow_corpus)
+    
+    
+    # lda_model = LdaMulticore(corpus=bow_corpus, id2word=dictionary, iterations=50, num_topics=10, workers=12, passes=10) # corpus could be a tfidf bow
+    
+    
+    # evaluate the coherence score
+    # https://stackoverflow.com/questions/54762690/evaluation-of-topic-modeling-how-to-understand-a-coherence-value-c-v-of-0-4
+    topics = []
+    score_c_v = []
+    score_u_mass = []
+    for i in range(1, 20, 1):
+        # workers = number of cpu cores, passes = number of times the model will pass through the corpus
+        lda_model = LdaMulticore(corpus=bow_corpus, id2word=dictionary, iterations=10, num_topics=i, workers=12, passes=10, random_state=100)
+        cm_u_mass = CoherenceModel(model=lda_model, corpus=bow_corpus, dictionary=dictionary, coherence='u_mass')
+        cm_c_v = CoherenceModel(model=lda_model, texts=docs, corpus=bow_corpus, dictionary=dictionary, coherence='c_v')
+        topics.append(i)
+        score_u_mass.append(cm_u_mass.get_coherence())
+        score_c_v.append(cm_c_v.get_coherence())
+    # fig, (ax1, ax2) = plt.subplots(1, 2)
+    # fig.suptitle('u_mass and c_v')
+    # ax1.plot(topics, score_c_v)
+    # ax2.plot(topics, -score_u_mass)
+    plt.plot(topics, score_u_mass)
+    plt.title('u_mass')
+    plt.xlabel('Number of Topics')
+    plt.ylabel('Coherence Score')
+    plt.show()
+    
+    plt.plot(topics, score_c_v)
+    plt.title('c_v')
+    plt.xlabel('Number of Topics')
+    plt.ylabel('Coherence Score')
+    plt.show()
+    
+    # print(docs)
+    # for doc in docs:
+    #     print(doc)
+    
     # l.set_number_of_topics()
     # l.engine(ngram=2)
     # l.set_number_of_keywords(n=20)

@@ -15,7 +15,7 @@ from bson.json_util import dumps
 
 
 if __name__ == '__main__':
-    df = pd.read_csv(r".\canned_coffee.csv", encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
+    df = pd.read_csv(r".\canned_coffee_5star_processed.csv", encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
     print(df.head())
 
 
@@ -51,6 +51,6 @@ if __name__ == '__main__':
         
         
     print('\n--- TO JSON')    
-    with open('canned_coffee.json', 'w') as f:
+    with open('canned_coffee_5star_processed.json', 'w') as f:
         cursor = col.find({})
         json.dump(json.loads(dumps(cursor)), f)    
