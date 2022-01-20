@@ -1,6 +1,8 @@
 from logging import logProcesses
+from select import select
 from pandas.core.arrays.categorical import contains
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -17,6 +19,10 @@ start_time = time.time()
 
 
 class MyScraper:
+    def driver(self):
+        # self.driver = webdriver.Chrome(driver_path)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        return self.driver
     def wait(self, mess='', sec=5):
         print(mess)
         for i in range(1, sec+1, 1):
@@ -29,33 +35,46 @@ class MyScraper:
                 f.write('')    
         self.time_now = time.strftime("%a, %d %b %Y %H:%M:%S")
         self.current_file = str(Path(__file__).absolute())
-    def log(self, log_path, line):
-        with io.open(log_path, 'r+', encoding='utf-8') as f:
+    def log(self, line):
+        with io.open(self.log_path, 'r+', encoding='utf-8') as f:
             content = f.read()
             f.seek(0, 0)
             f.write(line + content)
-     
+    def find_element_by(self, driver, flag, selector):
+        if flag=='css_selector':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, selector)))
+        elif flag=='xpath':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, selector)))
+        elif flag=='class_name':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, selector)))
+        elif flag=='id':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, selector)))
+        elif flag=='link_text':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.LINK_TEXT, selector)))
+        elif flag=='tag_name':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, selector)))
+        elif flag=='name':
+            return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, selector)))
+        # return WebDriverWait(driver, 10).until(EC.presence_of_element_located(flag, selector))
+        
     
         
 if __name__ == '__main__':
-    driver_path = "D:\ChromeDriver\chromedriver_ver96.exe"
-    driver = webdriver.Chrome(driver_path)
-    scraper = MyScraper()
-    
-    
-    log_path = r'D:/Python/django/ARA/SpiderSelenium/log.txt'
+    # driver_path = r"D:/ChromeDriver/chromedriver_ver96.exe"
+    log_path = r'./log.txt'
     s = MyScraper()
+    s.set_log_path(log_path)
+    driver = s.driver()
     
     
     homepage = f'https://www.amazon.com/Starbucks-Coffee-Frappuccino-13-7oz-Bottles/product-reviews/B08T7X9S9Z/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&pageNumber=1&filterByStar=five_star&sortBy=recent'
     driver.get(homepage)
-    
-    
-    scraper.wait(sec=3)
+    s.wait(sec=3)
 
         
     review_count_css_selector = '#filter-info-section > div.a-row.a-spacing-base.a-size-base > span'
     review_count_str = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, review_count_css_selector))).text
+    # review_count_str = s.find_element_by(driver, flag='css_selector', selector=review_count_css_selector).text
     review_count = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', review_count_str)[1]
     print(f'--- review_count = {review_count}')
     
@@ -69,7 +88,7 @@ if __name__ == '__main__':
         most_recent_five_star_reviews_page = f'https://www.amazon.com/Starbucks-Coffee-Frappuccino-13-7oz-Bottles/product-reviews/B08T7X9S9Z/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&pageNumber={i}&filterByStar=five_star&sortBy=recent'
         driver.get(most_recent_five_star_reviews_page)
         print('--- PAGE = ' + driver.current_url)
-        scraper.wait(sec=2)
+        s.wait(sec=2)
         
         
         review_titles = driver.find_elements_by_css_selector("*[data-hook='review-title']")
