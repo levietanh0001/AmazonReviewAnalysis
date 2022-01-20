@@ -26,13 +26,8 @@ Approach
 ---
 - Use TFIDF to assess how relevant a keyword is with respect to the 5-star review set.
 - Use Count Vectorizer to see how many times a keyword appears in a 5-star review set.
+- Use LDA to find the common topics
 - Visualize the data in a web app
-
-TFIDF vs CountVectorizer
----
-- Different in preprocessing approach
-  - CountVectorizer: frequency of a word in all of the reviews, each being an array of tokens
-  - TFIDF: importance of a word in a corpus containing reviews, with each review being a string of tokens
 
 
 Demo
