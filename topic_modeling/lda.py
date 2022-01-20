@@ -13,6 +13,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from gensim import corpora, similarities, downloader
 from gensim.models import LdaMulticore, CoherenceModel
+from gensim.models.ldamodel import LdaModel
+import pyLDAvis
+import pyLDAvis.gensim_models
+
 
 ## Evaluation
 # C_v measure is based on a sliding window, one-set segmentation of the top words and an indirect confirmation measure that uses normalized pointwise mutual information (NPMI) and the cosine similarity
@@ -120,35 +124,72 @@ if __name__ == '__main__':
     # lda_model = LdaMulticore(corpus=bow_corpus, id2word=dictionary, iterations=50, num_topics=10, workers=12, passes=10) # corpus could be a tfidf bow
     
     
-    # evaluate the coherence score
-    # https://stackoverflow.com/questions/54762690/evaluation-of-topic-modeling-how-to-understand-a-coherence-value-c-v-of-0-4
-    topics = []
-    score_c_v = []
-    score_u_mass = []
-    for i in range(1, 20, 1):
-        # workers = number of cpu cores, passes = number of times the model will pass through the corpus
-        lda_model = LdaMulticore(corpus=bow_corpus, id2word=dictionary, iterations=10, num_topics=i, workers=12, passes=10, random_state=100)
-        cm_u_mass = CoherenceModel(model=lda_model, corpus=bow_corpus, dictionary=dictionary, coherence='u_mass')
-        cm_c_v = CoherenceModel(model=lda_model, texts=docs, corpus=bow_corpus, dictionary=dictionary, coherence='c_v')
-        topics.append(i)
-        score_u_mass.append(cm_u_mass.get_coherence())
-        score_c_v.append(cm_c_v.get_coherence())
-    # fig, (ax1, ax2) = plt.subplots(1, 2)
-    # fig.suptitle('u_mass and c_v')
-    # ax1.plot(topics, score_c_v)
-    # ax2.plot(topics, -score_u_mass)
-    plt.plot(topics, score_u_mass)
-    plt.title('u_mass')
-    plt.xlabel('Number of Topics')
-    plt.ylabel('Coherence Score')
-    plt.show()
+    # # evaluate the coherence score
+    # # https://stackoverflow.com/questions/54762690/evaluation-of-topic-modeling-how-to-understand-a-coherence-value-c-v-of-0-4
+    # topics = []
+    # score_c_v = []
+    # score_u_mass = []
+    # for i in range(1, 20, 1):
+    #     # workers = number of cpu cores, passes = number of times the model will pass through the corpus
+    #     lda_model = LdaMulticore(corpus=bow_corpus, id2word=dictionary, iterations=10, num_topics=i, workers=12, passes=10, random_state=100)
+    #     cm_u_mass = CoherenceModel(model=lda_model, corpus=bow_corpus, dictionary=dictionary, coherence='u_mass')
+    #     cm_c_v = CoherenceModel(model=lda_model, texts=docs, corpus=bow_corpus, dictionary=dictionary, coherence='c_v')
+    #     topics.append(i)
+    #     score_u_mass.append(cm_u_mass.get_coherence())
+    #     score_c_v.append(cm_c_v.get_coherence())
+    # plt.plot(topics, score_u_mass)
+    # plt.title('u_mass')
+    # plt.xlabel('Number of Topics')
+    # plt.ylabel('Coherence Score')
+    # plt.show()
     
-    plt.plot(topics, score_c_v)
-    plt.title('c_v')
-    plt.xlabel('Number of Topics')
-    plt.ylabel('Coherence Score')
-    plt.show()
+    # plt.plot(topics, score_c_v)
+    # plt.title('c_v')
+    # plt.xlabel('Number of Topics')
+    # plt.ylabel('Coherence Score')
+    # plt.show()
     
+    
+    # https://github.com/rsreetech/LDATopicModelling/blob/main/LDADemo.ipynb
+    # def models_and_c_v_values(dictionary, corpus, texts, limit=20, start=2, step=3):
+    #     coherence_values = []
+    #     models = []
+    #     for num_topics in range(start, limit, step):
+    #         lda_model = LdaMulticore(corpus=corpus, id2word=dictionary, num_topics=num_topics, workers=12)
+    #         # model = LDA(corpus=corpus, num_topics=num_topics, id2word=dictionary)
+    #         models.append(lda_model)
+    #         cm_c_v = CoherenceModel(model=lda_model, texts=texts, dictionary=dictionary, coherence='c_v')
+    #         coherence_values.append(cm_c_v.get_coherence())
+    #     return models, coherence_values
+    def models_and_coherence_values(coherence, dictionary, corpus, texts, limit=20, start=2, step=3):
+        coherence_values = []
+        models = []
+        for num_topics in range(start, limit, step):
+            # lda_model = LdaMulticore(corpus=corpus, id2word=dictionary, num_topics=num_topics, workers=12)
+            lda_model = LdaModel(corpus=corpus, num_topics=num_topics, id2word=dictionary)
+            models.append(lda_model)
+            cm_u_mass = CoherenceModel(model=lda_model, texts=texts, dictionary=dictionary, coherence=coherence)
+            coherence_values.append(cm_u_mass.get_coherence())
+        return models, coherence_values
+    
+    
+    models_c_v, coherence_values_c_v = models_and_coherence_values(coherence='c_v', dictionary=dictionary, corpus=bow_corpus, texts=docs, limit=20, start=2, step=3)
+    models_u_mass, coherence_values_u_mass = models_and_coherence_values(coherence='u_mass', dictionary=dictionary, corpus=bow_corpus, texts=docs, limit=20, start=2, step=3)
+    
+    
+    def best_model(models, coherence_values):
+        max_coherence_value_index = coherence_values.index(max(coherence_values))
+        return models[max_coherence_value_index]
+        
+    
+    best_model_c_v = best_model(models_c_v, coherence_values_c_v)
+    best_model_u_mass = best_model(models_u_mass, coherence_values_u_mass)
+    
+    
+    vis = pyLDAvis.gensim_models.prepare(best_model_c_v, bow_corpus, dictionary)
+    pyLDAvis.save_html(vis, r'./visualization/LDA_c_v.html')
+    vis2 = pyLDAvis.gensim_models.prepare(best_model_u_mass, bow_corpus, dictionary)
+    pyLDAvis.save_html(vis2, r'./visualization/LDA_u_mass.html')
     # print(docs)
     # for doc in docs:
     #     print(doc)
