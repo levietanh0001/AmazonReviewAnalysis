@@ -14,24 +14,17 @@ from collections import Counter
 
 
 class PreprocessForCountVectorizer:
-    
     nltk.download('stopwords')
     nltk.download('punkt')
     nltk.download('wordnet')
     nltk.download('omw-1.4')
-    
-    
     def __init__(self, csv_path):
         self.nlp = spacy.load("en_core_web_lg")
         self.df = pd.read_csv(csv_path, encoding="utf-8-sig", delimiter=',', thousands=r',', dtype=None, chunksize=None)
         # self.all_reviews = [self.all_reviews.append(r) for r in self.df.review]
         self.all_reviews = ''.join(self.df.review)
-        
-        
     def print_sample_data(self, row=5):
         print(self.df.head(row))
-
-
     def stopwords_list(self):
         # Create Stop words list
         sw_list = list(stopwords.words('english'))
@@ -41,27 +34,18 @@ class PreprocessForCountVectorizer:
         '—', '_','satirewire.com',"/"]
         return sw_list
         # print(sw_list)
-
-    # create a function to tokenize text data 
-    # using the stop words list to remove stop words and lowercase every token
     def tokenize(self, review):
         tokens = nltk.word_tokenize(review)
         return tokens
-    
-    
     def remove_stopwords_and_punctuation(self, tokens):
         stopwords_removed = [token.lower() for token in tokens if token.lower() not in self.stopwords_list()]
         return stopwords_removed
-    
-    
     def stemming(self, tokenized_review):
         ps = PorterStemmer()
         stemmed=[]
         for token in tokenized_review:
             stemmed.append(ps.stem(token))
-        return stemmed
-        
-        
+        return stemmed 
     def lemmatization(self, tokenized_review):
         wnl = WordNetLemmatizer()
         porter = PorterStemmer()
@@ -70,8 +54,6 @@ class PreprocessForCountVectorizer:
             lemma_word= wnl.lemmatize(token) if wnl.lemmatize(token).endswith('e') else porter.stem(token)
             lemma_list.append(lemma_word)
         return lemma_list   
-    
-    
     def lemmatization2(self, tokenized_review):
         doc = self.nlp(tokenized_review)
         lemma_list=[]
@@ -84,9 +66,9 @@ class PreprocessForCountVectorizer:
         #     lemma_word= wnl.lemmatize(token) if wnl.lemmatize(token).endswith('e') else porter.stem(token)
         #     lemma_list.append(lemma_word)
         return lemma_list
-    
-    
     def save_to_csv(self, path, df):
+        df = df.replace('^\s*$', np.nan, regex=True).fillna("-")
+        # df.fillna(0, inplace=True)
         df.to_csv(path, columns=None, index=False, header=True, encoding='utf-8-sig', sep=',', decimal='.') 
         
         
@@ -176,10 +158,8 @@ if __name__ == '__main__':
     # print(noun_only_review_list)
     
         
-    # https://stackoverflow.com/questions/37253326/how-to-find-the-most-common-words-using-spacy?answertab=votes#tab-top
+    
     print('\n--- WORD FREQUENCY ---')
-    # docs = []
-    # for review in lemmatized_review_list:
     lemmatized_reviews = ''.join(map(str, lemmatized_review_list))
     doc = p.nlp(lemmatized_reviews)
     for token in doc:

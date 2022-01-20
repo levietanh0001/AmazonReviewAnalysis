@@ -22,7 +22,6 @@ class DfToMySQL:
     def set_dataframe(self, path):
         self.path = path
         self.df = pd.read_csv(self.path, encoding="utf-8-sig")
-        self.df.fillna(0, inplace=True)
     def to_mysql(self):
         self.con = create_engine(f'mysql+pymysql://{self.user}:{self.passwd}@{self.host}:{self.port}/{self.db}')
         self.df.to_sql(name=self.db, con=self.con, if_exists = 'replace', index=False)        

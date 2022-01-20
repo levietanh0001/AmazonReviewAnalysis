@@ -47,6 +47,8 @@ class MyScraper:
         self.current_file = str(Path(__file__).absolute())
     def set_homepage(self, homepage):
         self.homepage = homepage
+    def set_item_count_per_page(self, item_count_per_page):
+        self.item_count_per_page = item_count_per_page
     def log(self, line):
         with io.open(self.log_path, 'r+', encoding='utf-8') as f:
             content = f.read()
@@ -137,6 +139,7 @@ if __name__ == '__main__':
     s.set_log_path(log_path)
     s.set_csv_path(csv_path)
     s.set_homepage(homepage)
+    s.set_item_count_per_page(10)
     driver = s.driver()
     
     
@@ -156,7 +159,7 @@ if __name__ == '__main__':
     review_titles_strlist = []
     review_bodies_strlist = []
     # int(review_count)
-    for i in range(1, int(review_count), 1):
+    for i in range(1, int(review_count/s.item_count_per_page), 1):
         templist = []
         most_recent_five_star_reviews_page = f'https://www.amazon.com/Starbucks-Coffee-Frappuccino-13-7oz-Bottles/product-reviews/B08T7X9S9Z/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&pageNumber={i}&filterByStar=five_star&sortBy=recent'
         driver.get(most_recent_five_star_reviews_page)

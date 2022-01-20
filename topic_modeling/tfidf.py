@@ -1,13 +1,8 @@
-from tkinter.messagebox import NO
-from pandas.io.parsers import read_csv
-import sklearn
 import pandas as pd
-import numpy as np
 import sys
 import numpy
 numpy.set_printoptions(threshold=sys.maxsize)
 import seaborn as sns
-import json
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -25,11 +20,11 @@ class MyTFIDF:
         self.df = pd.read_csv(self.src, encoding="utf-8-sig")
         self.corpus = self.df[f'{self.data_col}']
         return self.corpus
-    def engine(self, ngram):
-        if ngram == '' or ngram == None:
+    def engine(self, ngram_range):
+        if ngram_range == '' or ngram_range == None:
             print("\nPlease specify n-gram!")
-        self.ngram = ngram
-        self.vectorizer = TfidfVectorizer(ngram_range=(self.ngram, self.ngram))
+        self.ngram_range = ngram_range
+        self.vectorizer = TfidfVectorizer(ngram_range=self.ngram_range)
         self.bow_matrix = self.vectorizer.fit_transform(self.corpus)
     def get_bag_of_words_matrix(self):
         return self.bow_matrix
@@ -63,12 +58,35 @@ class MyTFIDF:
 if __name__ == '__main__':
     t = MyTFIDF()
     csv_path = r"./databases/canned_coffee_5star_processed.csv"
+    
+    
+    # general
     t.set_dataframe_source(csv_path)
     t.produce_corpus_from_df_col('processed_review')
-    t.engine(ngram=2)
+    t.engine(ngram_range=(2,2))
     t.set_number_of_keywords(n=20)
     t.compute_words_frequency()
     x = t.get_word_frequency_list()
     y = t.get_word_list()
     t.plot_word_frequency_bar_chart(x, y, title=f'Top {t.n} 5-star bigram TFIDF')
+    
+    
+    # noun only
+    t.produce_corpus_from_df_col('processed_review_noun_only')
+    t.engine(ngram_range=(1,2))
+    t.set_number_of_keywords(n=20)
+    t.compute_words_frequency()
+    x = t.get_word_frequency_list()
+    y = t.get_word_list()
+    t.plot_word_frequency_bar_chart(x, y, title=f'Top {t.n} 5-star noun-only TFIDF')
+    
+    
+    # adjective only
+    t.produce_corpus_from_df_col('processed_review_adj_only')
+    t.engine(ngram_range=(1,2))
+    t.set_number_of_keywords(n=20)
+    t.compute_words_frequency()
+    x = t.get_word_frequency_list()
+    y = t.get_word_list()
+    t.plot_word_frequency_bar_chart(x, y, title=f'Top {t.n} 5-star adj-only TFIDF')
     
