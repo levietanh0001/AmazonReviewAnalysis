@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.service import Service
 import pandas as pd
 import time
 import os
@@ -29,7 +30,12 @@ class MyTimer():
 class MyScraper:
     def driver(self):
         # self.driver = webdriver.Chrome(driver_path)
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        s=Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=s)
+        
+        
+        
+        # self.driver = webdriver.Chrome(ChromeDriverManager().install())
         return self.driver
     def wait(self, mess='', sec=5):
         print(mess)
@@ -147,10 +153,11 @@ if __name__ == '__main__':
     driver.get(s.homepage)
     s.wait(sec=3)
 
-        
-    review_count_css_selector = '#filter-info-section > div.a-row.a-spacing-base.a-size-base > span'
-    # review_count_str = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, review_count_css_selector))).text
-    review_count_str = s.find_element(driver, flag='css_selector', selector=review_count_css_selector, ret='text')
+    
+    review_count_css_selector = "#filter-info-section > div.a-row.a-spacing-base.a-size-base"
+    review_count_str = WebDriverWait(driver, 10).until(EC.presence_of_element_located( (By.CSS_SELECTOR, review_count_css_selector) )).text
+    
+    # review_count_str = s.find_element(driver=driver, flag='css_selector', selector=review_count_css_selector, ret='text')
     review_count = re.findall(r'\b\d{1,3}(?:,\d{3})*(?:\.\d+)?(?!\d)', review_count_str)[1]
     print(f'--- review_count = {review_count}')
     
@@ -159,7 +166,9 @@ if __name__ == '__main__':
     review_titles_strlist = []
     review_bodies_strlist = []
     # int(review_count)
-    for i in range(1, int(review_count/s.item_count_per_page), 1):
+    to_be_scraped = int(int(review_count)/int(s.item_count_per_page))
+    for i in range(1, to_be_scraped, 1):
+        print('\n=== 3 ===')
         templist = []
         most_recent_five_star_reviews_page = f'https://www.amazon.com/Starbucks-Coffee-Frappuccino-13-7oz-Bottles/product-reviews/B08T7X9S9Z/ref=cm_cr_arp_d_viewopt_srt?ie=UTF8&reviewerType=all_reviews&pageNumber={i}&filterByStar=five_star&sortBy=recent'
         driver.get(most_recent_five_star_reviews_page)
@@ -167,9 +176,9 @@ if __name__ == '__main__':
         s.wait(sec=2)
         
         
-        # review_titles = driver.find_elements_by_css_selector("*[data-hook='review-title']")
+        review_titles = driver.find_elements_by_css_selector("*[data-hook='review-title']")
         review_titles_selector = "*[data-hook='review-title']"
-        review_titles = s.find_elements(driver, flag='css_selector', selector=review_titles_selector, ret='object')
+        # review_titles = s.find_elements(driver, flag='css_selector', selector=review_titles_selector, ret='object')
         for x in review_titles:
             templist.append(x.text)
         del templist[0:2]
@@ -177,8 +186,8 @@ if __name__ == '__main__':
         print(review_titles_strlist)
         
         review_bodies_selector = "*[data-hook='review-body']"  
-        review_bodies = s.find_elements(driver, flag='css_selector', selector=review_bodies_selector, ret='object')
-        # review_bodies = driver.find_elements_by_css_selector("*[data-hook='review-body']")
+        # review_bodies = s.find_elements(driver, flag='css_selector', selector=review_bodies_selector, ret='object')
+        review_bodies = driver.find_elements_by_css_selector("*[data-hook='review-body']")
         for x in review_bodies:
             if 'five_star' in driver.current_url:
                 ratings_strlist.append(5)
