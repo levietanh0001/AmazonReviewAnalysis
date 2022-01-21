@@ -37,6 +37,9 @@ class PreprocessForCountVectorizer:
     def tokenize(self, review):
         tokens = nltk.word_tokenize(review)
         return tokens
+    def remove_punctuation(self, tokens):
+        no_punc = [token.lower() for token in tokens if token.lower() not in list(string.punctuation)]
+        return no_punc
     def remove_stopwords_and_punctuation(self, tokens):
         stopwords_removed = [token.lower() for token in tokens if token.lower() not in self.stopwords_list()]
         return stopwords_removed
