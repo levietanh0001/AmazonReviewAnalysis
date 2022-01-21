@@ -1,0 +1,13 @@
+
+Set up mysql database for Django
+---
+> pip install pymysql
+
+
+Inside __init__.py
+```python
+
+import pymysql
+pymysql.install_as_MySQLdb()
+
+```
