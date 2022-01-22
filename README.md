@@ -29,6 +29,10 @@ Approach
 - Use LDA to find the common topics
 - Visualize the data in a web app
 
+Task description:
+---
+- Task description: we are provided with a product on Amazon (in this project we have Starbucks Frappuccino), and we have to analyse the product's reviews and extract information that might be useful for our client to apply to their product of the same category.
+- Motivation: this project hopes to assist retailers in understanding better about what makes a bestseller and about their competitors' products, providing them with a tool to better make decisions about different approaches to maximize their chances of being among the top-selling.
 
 Demo
 ---
