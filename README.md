@@ -100,3 +100,8 @@ Sucessfully extracting potential words and phrases that might be helpful
 ## Unsolved
 Keywords and phrases are not yet properly ranked.
 A function to predict the grammatical and semantic patterns.
+
+- Demo: this whole project is initially conceived to be a Django-React web app. However due to our lack of experience in intergrating models with the web app, currently the demo only have the front page with a placeholder chart. To deploy this web app, we go to the root directory and run:
+```bat
+python manage.py runserver 
+```
