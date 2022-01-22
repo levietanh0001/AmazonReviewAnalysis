@@ -54,7 +54,10 @@ word degree of word w - total number of words in all phrases containing w in the
 ```
 - Chunking: potentially the most suitable technique for the task in our opinion, where we would try to group different words into useful phrases based on their grammatical strucutre (noun-verb-noun, adjective-noun, etc.), regular expressions and a list of unwanted words.
 
-
+2. Current mainstream methods: TFIDF, RAKE and chunking.
+3. Methods:
+- We model the task by firstly trying out every possible topic modelling techniques and information extraction methods listed above. We skip several methods like LSA for its nature of reducing the size of exisitng dataset, and for this task is focused on information mining rather than modeling the topics.
+- We found a potential solution for the task which requires a person with certain knowledge on the field of targeting products to firstly look at the initial output words produced by CountVectorizer, TFIDF, RAKE, and select a custom set of words and phrases that might be useful (+), as well as those that are irrelevant (-). We then apply the chunking technique using these two sets (+) and (-) to infer the grammatical structure of important words and phrases, along with possible repeating features.
 Demo
 ---
 1. Data Visualization
