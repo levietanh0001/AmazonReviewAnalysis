@@ -62,6 +62,7 @@ word degree of word w - total number of words in all phrases containing w in the
 
 **4. Evaluation:**
 - Dataset description: reviews directly scraped from the product page on Amazon. Since we are focusing on mining information, we currently don't split our dataset to training and testing, but rather, improving the results gradually. The results would then be made into a custom model that takes a list of 5-star reviews, their ratings and helpfulness votes and output potential words and phrases. This model would then be evaluated based on how many top words and phrases it produces that statisfy our supervisor/client requirements.
+
 - Evaluation measures:
 
 ## CountVectorizer
