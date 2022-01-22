@@ -52,7 +52,7 @@ where:
 word frequency of word w - the number of times word w appears in the input dataset
 word degree of word w - total number of words in all phrases containing w in the input dataset
 ```
-
+- Chunking: potentially the most suitable technique for the task in our opinion, where we would try to group different words into useful phrases based on their grammatical strucutre (noun-verb-noun, adjective-noun, etc.), regular expressions and a list of unwanted words.
 
 
 Demo
