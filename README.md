@@ -57,7 +57,10 @@ word degree of word w - total number of words in all phrases containing w in the
 2. Current mainstream methods: TFIDF, RAKE and chunking.
 3. Methods:
 - We model the task by firstly trying out every possible topic modelling techniques and information extraction methods listed above. We skip several methods like LSA for its nature of reducing the size of exisitng dataset, and for this task is focused on information mining rather than modeling the topics.
-- We found a potential solution for the task which requires a person with certain knowledge on the field of targeting products to firstly look at the initial output words produced by CountVectorizer, TFIDF, RAKE, and select a custom set of words and phrases that might be useful (+), as well as those that are irrelevant (-). We then apply the chunking technique using these two sets (+) and (-) to infer the grammatical structure of important words and phrases, along with possible repeating features.
+- We found a potential solution for the task which requires a supervisor with certain knowledge on the field of targeting products to firstly look at the initial output words produced by CountVectorizer, TFIDF, RAKE, and select a custom set of words and phrases that might be useful (+), as well as those that are irrelevant (-). We then apply the chunking technique using these two sets (+) and (-) to infer the grammatical structure of important words and phrases, along with possible repeating features.
+
+4. Evaluation:
+- Dataset description: reviews directly scraped from the product page on Amazon. Since we are focusing on mining information, we currently don't split our dataset to training and testing, but rather, improving the results gradually. The results would then be made into a custom model that takes a list of 5-star reviews, their ratings and helpfulness votes and output potential words and phrases. This model would then be evaluated based on how many top words and phrases it produces that statisfy our supervisor/client requirements.
 Demo
 ---
 1. Data Visualization
