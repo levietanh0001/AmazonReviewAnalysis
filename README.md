@@ -43,7 +43,16 @@ tf(t,d) = count of term t in document d / number of words in d
 idf(t) = log_e(N/ df(t))
 N = Number of documents
 df(t) = Document frequency of a term t
-```	
+```
+- LDA: a method to infer topics, i.e. groups of words that are related to each other. In this project, we have found that this technique is not only slow in apllication, but also produces disappointing results, where we can only obtain incoherent n-gram words, i.e. a set of fixed-length words with little meaning.
+- RAKE: also know as rapid automatic keyword extraction, this simple method is simplistic yet helpful in extracting not only fixed-length set of words but rather complete phrases. It works by removing the stop-words (words that don't contribute much to the context) and acquire the phrases from what's left. RAKE then ranks the phrases by their relevancy score, going by the formula:
+```
+score = word degree/ word frequency
+where:
+word frequency of word w - the number of times word w appears in the input dataset
+word degree of word w - total number of words in all phrases containing w in the input dataset
+```
+
 
 
 Demo
