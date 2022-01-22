@@ -1,13 +1,6 @@
 # AmazonReviewAnalysis - A Natural Language Processing Web App
 ** CURRENT WORKING BRANCH: ver6 **
 
-Overview
----
-
-
-Objectives
----
-
 
 Tech Stack
 ---
@@ -32,8 +25,23 @@ Approach
 
 Task description:
 ---
-- Task description: we are provided with a product on Amazon (in this project we have Starbucks Frappuccino), and we have to analyse the product's reviews and extract information that might be useful for our client to apply to their product of the same category.
+- Task description: we are provided with a product on Amazon (in this project we have Starbucks Frappuccino), and we have to analyse the product's reviews and extract information that might be useful for our client to implement to their product of the same category.
 - Motivation: this project hopes to assist retailers in understanding better about what makes a bestseller and about their competitors' products, providing them with a tool to better make decisions about different approaches to maximize their chances of being among the top-selling.
+
+
+Survey
+---
+- Existing methods for the task: 
+  1. CountVectorizer: this simple technique only provides us with a word-document matrix, i.e. the final output would be a list of words and the number of times they appear in the entire review set. Therefore, it is useful for preprocessing, but not so much useful information could be obtained from CountVectorizer.
+  2. TFIDF: a very popular method to list out significant words in the review set. TF-IDF not only takes into account how many times a word appear in the document (a review in this case), but also putting a restraint on those words that are frequently used. This method goes by the following formula:
+> tf-idf(t, d) = tf(t, d) * idf(t)
+where:
+tf(t,d) = count of term t in document d / number of words in d
+idf(t) = log_e(N/ df(t))
+N = Number of documents
+df(t) = Document frequency of a term t
+	
+
 
 Demo
 ---
