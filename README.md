@@ -1,8 +1,0 @@
-TFIDVECTORIZER
----
-VISUALIZATION
----
-
-LABELING
----
-Doccano
