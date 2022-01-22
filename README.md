@@ -8,7 +8,7 @@ Tech Stack
 - React.js: frontend
 - Charts.js: data visualization
 - selenium: data scraper
-- nltk/spacy: natural language processing
+- nltk, spacy, gensim: natural language processing
 - sklearn: machine learning
 
 
