@@ -35,9 +35,9 @@ Survey
 - CountVectorizer: this simple technique only provides us with a word-document matrix, i.e. the final output would be a list of words and the number of times they appear in the entire review set. Therefore, it is useful for preprocessing, but not so much useful information could be obtained from CountVectorizer.
 - TFIDF: a very popular method to list out significant words in the review set. TF-IDF not only takes into account how many times a word appear in the document (a review in this case), but also putting a restraint on those words that are frequently used. This method goes by the following formula:
 
-
-> tf-idf(t, d) = tf(t, d) * idf(t)
 ```
+tf-idf(t, d) = tf(t, d) * idf(t)
+
 where:
 tf(t,d) = count of term t in document d / number of words in d
 idf(t) = log_e(N/ df(t))
