@@ -64,10 +64,19 @@ word degree of word w - total number of words in all phrases containing w in the
 - Evaluation measures:
 
 **CountVectorizer**
-![image](https://user-images.githubusercontent.com/47298653/148825435-5a590bee-013d-4b09-9bc5-bb601310774d.png)
+![image](https://user-images.githubusercontent.com/47298653/148825489-45e1935b-31d5-4382-a466-f0f4208dc634.png)
 
 **TFIDF**
-![image](https://user-images.githubusercontent.com/47298653/148825489-45e1935b-31d5-4382-a466-f0f4208dc634.png)
+![image](https://user-images.githubusercontent.com/47298653/148825435-5a590bee-013d-4b09-9bc5-bb601310774d.png)
+
+**LDA**
+The following snapshots evaluate the coherence scores that determines which model with how many topics is the most efficient in producing topics with words closely related to each other:
+
+- Model based on c_v coherence score:
+![c_v_topics_vs_coherence_score](https://user-images.githubusercontent.com/47298653/150640022-fbbd2be8-b7a4-4c36-8c98-3aa437242555.png)
+
+- Model based on u_mass coherence score:
+![umass_topics_vs_coherence_score](https://user-images.githubusercontent.com/47298653/150640046-4ed73e90-cdba-4b19-bfc5-4e1a1095b96c.png)
 
 
 
